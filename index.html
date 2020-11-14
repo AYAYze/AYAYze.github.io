@@ -133,18 +133,23 @@ body{
       else document.getElementById("who").innerText = 'O';
     }
     function t(e) {
-      if(player == 1){
-        let tmp = 'O';
-        e.innerText = tmp;
-        player = -player;
-        change(tmp);
-      }else {
-        let tmp = 'X';
-        e.innerText =  tmp;
-        player = -player;
-        change(tmp);
+      if(e.innerText != ''){
+        alert("어이~ 거긴 이미 누른자리라구~")
+      }else{
+        if(player == 1){
+          let tmp = 'O';
+          e.innerText = tmp;
+          player = -player;
+          change(tmp);
+        }else {
+          let tmp = 'X';
+          e.innerText =  tmp;
+          player = -player;
+          change(tmp);
+      }
       }
     }
   </script>
+  
 </body>
 </html>
