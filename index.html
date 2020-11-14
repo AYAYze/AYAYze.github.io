@@ -4,12 +4,15 @@
 <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
     <style>
       ::-webkit-scrollbar { display: none; }
+html {
+  scroll-behavior: smooth;
+}
 
 body{
   margin:0
 }
 
-#container {
+.container {
   display:flex;
   width:100vw;
   height:100vh;
@@ -31,9 +34,12 @@ body{
   width: 500px;
   height: 500px;
   background: linear-gradient(90deg, rgba(255,204,204,1) 0%, rgba(215,228,255,1) 100%);
-  
+  transition:background 1s;
 }
 
+#box:hover{
+  background: linear-gradient(90deg, rgba(157,126,126,1) 0%, rgba(140,148,166,1) 100%);
+}
 #h{
   font-size:30px;
   margin:100px;
@@ -42,16 +48,103 @@ body{
 ::selection {
   background-color: white;
 }
+
+.arrow {
+  position: fixed;
+  right: 30px;
+  top: 50vh;
+  border: 1px solid black;
+  padding:5px;
+  
+}
+
+.arrow a {
+  text-decoration: none;
+  color: black;
+}
+
+#tic {
+  border: 1px solid black;
+}
+
+#tic td {
+  padding:50px;
+  background-color:beige;
+}
+
+#who {
+  font-family: 'Nanum Myeongjo', sans-serif;
+  font-size: 50px;
+  color: #ff7473;
+}
     </style>
+    
   </head>
 <body>
-  <div id="container">
+  <div class="arrow">
+    <a href="#section1">
+      <div>
+        ↑
+      </div>
+    </a>
+    <a href="#section2">
+      <div>
+        ↓
+      </div>
+    </a>
+  </div>
+
+  <div class="container" id="section1">
     <div id="box">
       FLEX
       <div id="h">
         해버렸지 뭐야
-      <div>
       </div>
+    </div>
   </div>
+
+  <div class="container" id="section2">
+    <div id="who"> O </div>
+    <table id="tic">
+      <tr>
+        <td onclick="t(this)">  </td>
+        <td onclick="t(this)">  </td>
+        <td onclick="t(this)">  </td>
+      </tr>
+      <tr>
+        <td onclick="t(this)">  </td>
+        <td onclick="t(this)">  </td>
+        <td onclick="t(this)">  </td>
+      </tr>
+      <tr>
+        <td onclick="t(this)">  </td>
+        <td onclick="t(this)">  </td>
+        <td onclick="t(this)">  </td>
+      </tr>
+    </table>
+  </div>
+
+
+  <script>
+    let player = 1;
+    function change(t){
+      if(t == 'O')
+      document.getElementById("who").innerText = 'X';
+      else document.getElementById("who").innerText = 'O';
+    }
+    function t(e) {
+      if(player == 1){
+        let tmp = 'O';
+        e.innerText = tmp;
+        player = -player;
+        change(tmp);
+      }else {
+        let tmp = 'X';
+        e.innerText =  tmp;
+        player = -player;
+        change(tmp);
+      }
+    }
+  </script>
 </body>
 </html>
