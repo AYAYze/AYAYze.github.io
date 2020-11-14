@@ -1,0 +1,35 @@
+::-webkit-scrollbar { display: none; }
+
+body{
+  margin:0
+}
+
+#container {
+  display:flex;
+  width:100vw;
+  height:100vh;
+  flex-direction: column;
+  margin:0;
+  align-items: center;
+  justify-content:center;
+}
+
+#box {
+  font-family: 'Nanum Myeongjo', sans-serif;
+  font-size:50px;
+  text-align: center;
+  vertical-align: middle;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  padding:5px;
+  color:white;
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(90deg, rgba(255,204,204,1) 0%, rgba(215,228,255,1) 100%);
+  
+}
+
+#h{
+  font-size:30px;
+  margin:100px;
+}
