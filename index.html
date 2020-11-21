@@ -235,7 +235,8 @@ body{
   </script>
       <script>
         let leftImg = document.getElementById("leftImg");
-        let imgs = ['autumn.jpg', 'cherry.jpg', 'person.jpg', 'red.jpg'];
+        //let imgs = ['autumn.jpg', 'cherry.jpg', 'person.jpg', 'red.jpg'];
+        let imgs = ['https://images.fairtrade.net/product/infosite_flowers_18043_1440.jpg', 'cherry.jpg', 'person.jpg', 'https://media.architecturaldigest.com/photos/5ab188ded91fc303af543b8e/3:4/w_2406,h_3208,c_limit/faux-flowers-urban.jpg'];
         let i = 0;
         setInterval(()=>{
             leftImg.style.backgroundImage = `url("./${imgs[i % (imgs.length)]}")`;
