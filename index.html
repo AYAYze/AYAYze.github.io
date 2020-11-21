@@ -2,6 +2,8 @@
 <html>
   <head>
 <link href="https://fonts.googleapis.com/css?family=Nanum+Myeongjo&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
     <style>
       ::-webkit-scrollbar { display: none; }
 html {
@@ -55,7 +57,7 @@ body{
   top: 50vh;
   border: 1px solid black;
   padding:5px;
-  
+  z-index:3;
 }
 
 .arrow a {
@@ -77,24 +79,79 @@ body{
   font-size: 50px;
   color: #ff7473;
 }
+
+
+::-webkit-scrollbar { display: none; }
+
+#top {
+    font-family: 'Playfair Display', serif;
+    
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+#leftImg {
+    background-image:url("./person.jpg");
+    filter:blur(8px);
+    opacity: 0.8;
+    background-repeat: no-repeat;
+    background-size:cover;
+    /*background-position: -500px -1500px;*/
+    background-position:center center;
+    background-attachment: fixed;
+    width:100vw;
+    height: 100vh;
+    transition: background-image 1s ease-in-out;
+}
+#somet {
+    position: absolute;
+    width: 500px;
+    height: 700px;
+    background-color: white;
+    right: 100px;
+    top:5vh;
+    font-size: 50px;
+    line-height:700px;
+    box-shadow: 
+                -10px -10px 30px rgb(255, 219, 219);
+}
+/*
+#top:hover {
+    transform: rotateY(180deg);
+}
+*/
+#text {
+    text-align:center;
+    vertical-align:middle;
+}
+#text2 {
+    position: absolute;
+    left: 20%;
+    top: 40%;
+    font-size:100px;
+    padding: 10px;
+    color:black;
+    background-color: white;
+    mix-blend-mode: screen;
+    opacity: 0.8;
+}
     </style>
     
   </head>
 <body>
   <div class="arrow">
-    <a href="#section1">
+    <a href="#s1" onclick="ahu()" id="up">
       <div>
         ↑
       </div>
     </a>
-    <a href="#section2">
+    <a href="#s2" onclick="ah()" id="down">
       <div>
         ↓
       </div>
     </a>
   </div>
 
-  <div class="container" id="section1">
+  <div class="container" id="s1">
     <div id="box">
       FLEX
       <div id="h">
@@ -103,7 +160,7 @@ body{
     </div>
   </div>
 
-  <div class="container" id="section2">
+  <div class="container" id="s2">
     <div id="who"> O </div>
     <table id="tic">
       <tr>
@@ -124,6 +181,15 @@ body{
     </table>
   </div>
 
+  <div class="container" id="s3">
+    <div id="top">
+      <div id="leftImg"></div>
+      <div id="somet">
+          <div id="text">Hello</div>
+      </div>
+      <div id="text2">HIROONG</div>
+  </div>
+  </div>
 
   <script>
     let player = 1;
@@ -149,7 +215,32 @@ body{
       }
       }
     }
+    function ahu(){
+      let href = location.href;
+      let sec = href.substring(href.indexOf('#') + 2);
+      let down = document.getElementById("up");
+
+      if(parseInt(sec)){
+        down.href = `#s${parseInt(sec) - 1}`;  
+      };
+    }
+    function ah(){
+      let href = location.href;
+      let sec = href.substring(href.indexOf('#') + 2);
+      let down = document.getElementById("down");
+      if(parseInt(sec)){
+        down.href = `#s${parseInt(sec) + 1}`;
+      };
+    }
   </script>
-  
+      <script>
+        let leftImg = document.getElementById("leftImg");
+        let imgs = ['autumn.jpg', 'cherry.jpg', 'person.jpg', 'red.jpg'];
+        let i = 0;
+        setInterval(()=>{
+            leftImg.style.backgroundImage = `url("./${imgs[i % (imgs.length)]}")`;
+            i++;
+        }, 3050);
+    </script>
 </body>
 </html>
