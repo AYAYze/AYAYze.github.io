@@ -218,13 +218,14 @@ body{
       }
       }
     }
+    let page = 3;
     function ahu(){
       let href = location.href;
       let sec = href.substring(href.indexOf('#') + 2);
       let down = document.getElementById("up");
 
       if(parseInt(sec)){
-        down.href = `#s${parseInt(sec) - 1}`;  
+        down.href = `#s${(parseInt(sec) - 1) % 3}`;  
       };
     }
     function ah(){
@@ -232,7 +233,7 @@ body{
       let sec = href.substring(href.indexOf('#') + 2);
       let down = document.getElementById("down");
       if(parseInt(sec)){
-        down.href = `#s${parseInt(sec) + 1}`;
+        down.href = `#s${(parseInt(sec) + 1) % 3}`;
       };
     }
   </script>
