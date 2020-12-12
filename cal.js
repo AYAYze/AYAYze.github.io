@@ -37,9 +37,10 @@ function titleYM(yy,mm) {
 }
 
 function change(yy, mm){
-    console.log('h')
+    console.log('asdf')
     let call = document.getElementById("days");
     call.innerHTML = '';
+    요일(call);
     for(let i = 0; i < parseInt(cal.getFirst(yy,mm).getDay()); i++){
         call.innerHTML += `<div class="empty"></div>`;
     }
@@ -51,6 +52,7 @@ function change(yy, mm){
         }
     }
     titleYM(yy, mm);
+    
 }
 
 function init(){
@@ -68,4 +70,16 @@ function prev(){
 function next(){
     let d = cal.nextMonth();
     change(d.getFullYear(), d.getMonth())
+}
+
+function 요일(dom){
+    dom.innerHTML += `
+    <div class="day">일</div>
+    <div class="day">월</div>
+    <div class="day">화</div>
+    <div class="day">수</div>
+    <div class="day">목</div>
+    <div class="day">금</div>
+    <div class="day">토</div>
+    `;
 }
