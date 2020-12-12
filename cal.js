@@ -74,12 +74,12 @@ function next(){
 
 function 요일(dom){
     dom.innerHTML += `
-    <div class="day">일</div>
-    <div class="day">월</div>
-    <div class="day">화</div>
-    <div class="day">수</div>
-    <div class="day">목</div>
-    <div class="day">금</div>
-    <div class="day">토</div>
+    <div class="day yo">일</div>
+    <div class="day yo">월</div>
+    <div class="day yo">화</div>
+    <div class="day yo">수</div>
+    <div class="day yo">목</div>
+    <div class="day yo">금</div>
+    <div class="day yo">토</div>
     `;
 }
