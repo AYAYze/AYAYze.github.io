@@ -36,7 +36,7 @@ function titleYM(yy,mm) {
     calM.innerHTML = `${m.toString().length != 1 ? m : '0'+m}월`
 }
 
-function change(yy, mm){
+function changee(yy, mm){
     console.log('asdf')
     let call = document.getElementById("days");
     call.innerHTML = '';
@@ -57,19 +57,19 @@ function change(yy, mm){
 
 function init(){
     titleYM(cal.today.yy, cal.today.mm);
-    change(cal.today.yy, cal.today.mm);
+    changee(cal.today.yy, cal.today.mm);
 }
 init();
 
 function prev(){
     let d = cal.prevMonth();
     console.log(d.getMonth())
-    change(d.getFullYear(), d.getMonth())
+    changee(d.getFullYear(), d.getMonth())
 }
 
 function next(){
     let d = cal.nextMonth();
-    change(d.getFullYear(), d.getMonth())
+    changee(d.getFullYear(), d.getMonth())
 }
 
 function 요일(dom){
