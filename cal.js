@@ -37,6 +37,7 @@ function titleYM(yy,mm) {
 }
 
 function change(yy, mm){
+    console.log('h')
     let call = document.getElementById("days");
     call.innerHTML = '';
     for(let i = 0; i < parseInt(cal.getFirst(yy,mm).getDay()); i++){
