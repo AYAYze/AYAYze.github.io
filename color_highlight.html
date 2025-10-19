@@ -43,7 +43,6 @@
     <input type="file" id="imageInput" accept="image/*">
     <label>유사도: <input type="range" id="tolerance" min="0" max="100" value="10"></label>
     <div>선택 색상: <div id="selectedColorBox"></div></div>
-    <button id="detectBtn">테두리 표시</button>
     <button id="resetBtn">초기화</button>
   </div>
 
@@ -56,13 +55,10 @@
     const ctx = canvas.getContext('2d');
     const imageInput = document.getElementById('imageInput');
     const toleranceInput = document.getElementById('tolerance');
-    const detectBtn = document.getElementById('detectBtn');
     const resetBtn = document.getElementById('resetBtn');
     const selectedColorBox = document.getElementById('selectedColorBox');
 
     let cvLoaded = false;
-    let selectedColor = null;
-
     function onOpenCvReady() {
       cvLoaded = true;
       console.log('✅ OpenCV.js loaded');
@@ -85,8 +81,12 @@
       ctx.drawImage(img, 0, 0);
     };
 
-    // 이미지 클릭 → 색상 추출
+    // 이미지 클릭 → 색상 추출 및 즉시 테두리 표시
     canvas.addEventListener('click', e => {
+      if (!cvLoaded) {
+        alert("OpenCV.js가 아직 로드되지 않았습니다. 잠시 후 다시 시도하세요.");
+        return;
+      }
       if (!img.src) return;
 
       const rect = canvas.getBoundingClientRect();
@@ -94,25 +94,9 @@
       const y = Math.floor((e.clientY - rect.top) * (canvas.height / rect.height));
 
       const pixel = ctx.getImageData(x, y, 1, 1).data;
-      selectedColor = { r: pixel[0], g: pixel[1], b: pixel[2] };
+      const selectedColor = { r: pixel[0], g: pixel[1], b: pixel[2] };
       selectedColorBox.style.backgroundColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
       console.log(`🎯 선택한 색상: R${pixel[0]} G${pixel[1]} B${pixel[2]}`);
-    });
-
-    // 테두리 표시
-    detectBtn.addEventListener('click', () => {
-      if (!cvLoaded) {
-        alert("OpenCV.js가 아직 로드되지 않았습니다. 잠시 후 다시 시도하세요.");
-        return;
-      }
-      if (!img.src) {
-        alert("이미지를 먼저 업로드하세요.");
-        return;
-      }
-      if (!selectedColor) {
-        alert("이미지에서 색상을 먼저 클릭하세요.");
-        return;
-      }
 
       const tol = parseInt(toleranceInput.value);
       detectColorOutline(selectedColor, tol);
@@ -126,48 +110,47 @@
     });
 
     function detectColorOutline(targetColor, tolerance) {
-  // 1️⃣ 원본 다시 그리기
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.drawImage(img, 0, 0);
+      // 원본 다시 그리기
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(img, 0, 0);
 
-  // 2️⃣ 다음 프레임에서 OpenCV 처리 시작
-  requestAnimationFrame(() => {
-    let src = cv.imread(canvas);
-    let dst = new cv.Mat();
-    let mask = new cv.Mat();
+      // 다음 프레임에서 OpenCV 처리
+      requestAnimationFrame(() => {
+        let src = cv.imread(canvas);
+        let dst = new cv.Mat();
+        let mask = new cv.Mat();
 
-    let lower = new cv.Mat(src.rows, src.cols, src.type(), [
-      Math.max(targetColor.r - tolerance, 0),
-      Math.max(targetColor.g - tolerance, 0),
-      Math.max(targetColor.b - tolerance, 0),
-      0
-    ]);
-    let upper = new cv.Mat(src.rows, src.cols, src.type(), [
-      Math.min(targetColor.r + tolerance, 255),
-      Math.min(targetColor.g + tolerance, 255),
-      Math.min(targetColor.b + tolerance, 255),
-      255
-    ]);
+        let lower = new cv.Mat(src.rows, src.cols, src.type(), [
+          Math.max(targetColor.r - tolerance, 0),
+          Math.max(targetColor.g - tolerance, 0),
+          Math.max(targetColor.b - tolerance, 0),
+          0
+        ]);
+        let upper = new cv.Mat(src.rows, src.cols, src.type(), [
+          Math.min(targetColor.r + tolerance, 255),
+          Math.min(targetColor.g + tolerance, 255),
+          Math.min(targetColor.b + tolerance, 255),
+          255
+        ]);
 
-    cv.inRange(src, lower, upper, mask);
+        cv.inRange(src, lower, upper, mask);
 
-    let contours = new cv.MatVector();
-    let hierarchy = new cv.Mat();
-    cv.findContours(mask, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+        let contours = new cv.MatVector();
+        let hierarchy = new cv.Mat();
+        cv.findContours(mask, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
 
-    src.copyTo(dst);
-    for (let i = 0; i < contours.size(); ++i) {
-      let color = new cv.Scalar(255, 0, 0, 255); // 빨간 테두리
-      cv.drawContours(dst, contours, i, color, 1, cv.LINE_8, hierarchy, 0);
+        src.copyTo(dst);
+        for (let i = 0; i < contours.size(); ++i) {
+          let color = new cv.Scalar(255, 0, 0, 255); // 빨간 테두리
+          cv.drawContours(dst, contours, i, color, 1, cv.LINE_8, hierarchy, 0);
+        }
+
+        cv.imshow('canvas', dst);
+
+        src.delete(); dst.delete(); mask.delete(); lower.delete(); upper.delete();
+        contours.delete(); hierarchy.delete();
+      });
     }
-
-    cv.imshow('canvas', dst);
-
-    src.delete(); dst.delete(); mask.delete(); lower.delete(); upper.delete();
-    contours.delete(); hierarchy.delete();
-  });
-}
-
   </script>
 </body>
 </html>
